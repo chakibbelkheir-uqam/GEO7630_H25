@@ -12,8 +12,8 @@
 var map = new maplibregl.Map({
     container: 'map',
     style: 'https://api.maptiler.com/maps/streets/style.json?key=JhO9AmIPH59xnAn5GiSj',
-    center: [12.338, 45.4385],
-    zoom: 17.4
+    center: [-73.55, 45.55],
+    zoom: 12
 });
 
 // On declare une variable pour contenir notre GeoJSON mais on ne l'initialise pas tout de suite
