@@ -16,11 +16,12 @@
     // Couche des zones piétonnes
     map.addLayer({
       id: 'pietonnes',
-      type: 'fill',
-      source: '__________________',
+      type: 'circle',
+      source: 'zones_pietonnes_source',
       paint: {
-        'fill-color': '#009688',
-        'fill-opacity': 0.5
+        'circle-color': 'red',
+        'circle-radius': 10,
+
       }
     });
   
@@ -28,23 +29,23 @@
     map.addLayer({
       id: 'parcs',
       type: 'fill',
-      source: '__________________',
+      source: 'parcs_source',
       paint: {
-        'fill-color': '#FF5722',
-        'fill-opacity': 0.3
+        'fill-color': 'darkgreen',
+        'fill-opacity': 0.6
       }
     });
   
     // Couche de surlignement dynamique
     map.addLayer({
       id: 'highlighted',
-      type: 'line',
-      source: 'zones_scolaires',
+      type: 'fill',
+      source: 'parcs_source',
       paint: {
-        'line-color': '#000',
-        'line-width': 3
+        'fill-color': 'orange',
+        'fill-opacity': 0.6
       },
-      filter: ['in', 'id', ''] // Filtre vide au départ
+      filter: ['in', 'OBJECTID', ''] // Filtre vide au départ
     });
   });
   
@@ -55,22 +56,26 @@
     if (!features.length) return;
   
     const zonePietonne = features[0];
-    const bbox = turf.bbox(zonePietonne);
+    const zonePietonneBuffer = turf.buffer(zonePietonne, 500, {units: 'meters'});
+    const bbox = turf.bbox(zonePietonneBuffer);
     const candidates = map.queryRenderedFeatures({ bbox: bbox, layers: ['parcs'] });
   
     const intersecting = candidates.filter(z => {
-      return turf.booleanIntersects(zonePietonne, ________________);
+      return turf.booleanIntersects(zonePietonneBuffer, z);
     });
   
-    const ids = intersecting.map(f => f.properties.id);
-    map.setFilter('highlighted', ['in', 'id', ________________]);
+    console.log(intersecting)
+    const ids = intersecting.map(f => f.properties.OBJECTID);
+    console.log(ids)
+    map.setFilter('highlighted', ['in', 'OBJECTID', ...ids]);
   
+
     // Mettre à jour l’interface DOM avec les noms des écoles
     const list = document.getElementById('list');
     list.innerHTML = '';
     intersecting.forEach(f => {
       const li = document.createElement('li');
-      li.textContent = f.properties.__________________;
+      li.textContent = f.properties.Nom ? f.properties.Nom : f.properties.TYPO1;
       list.appendChild(li);
     });
   });
