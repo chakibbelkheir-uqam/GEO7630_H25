@@ -1,0 +1,9 @@
+version: "3.4"
+services:
+  server-web:
+    image: nginx
+    ports:
+      - 8000:80
+    volumes:
+      - ./app/:/usr/share/nginx/html
+    restart: always
