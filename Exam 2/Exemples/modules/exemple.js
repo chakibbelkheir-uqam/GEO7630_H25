@@ -12,79 +12,81 @@
       type: 'geojson',
       data: 'https://donnees.montreal.ca/fr/dataset/2e9e4d2f-173a-4c3d-a5e3-565d79baa27d/resource/35796624-15df-4503-a569-797665f8768e/download/espace_vert.json' // GeoJSON des zones scolaires
     });
-  
     // Couche des zones piétonnes
     map.addLayer({
       id: 'pietonnes',
-      type: 'circle',
-      source: 'zones_pietonnes_source',
+      type: '______________', // Type de géométrie (ex: "circle")
+      source: '______________',
       paint: {
-        'circle-color': 'red',
-        'circle-radius': 10,
-
+        'circle-color': '______________', // Couleur des points
+        'circle-radius': ____________ // Taille des points
       }
     });
   
-    // Couche des zones scolaires
+    // Couche des parcs
     map.addLayer({
       id: 'parcs',
-      type: 'fill',
-      source: 'parcs_source',
+      type: '______________', // Type de géométrie (ex: "fill")
+      source: '______________',
       paint: {
-        'fill-color': 'darkgreen',
-        'fill-opacity': 0.6
+        'fill-color': '______________',
+        'fill-opacity': ____________
       }
     });
   
     // Couche de surlignement dynamique
     map.addLayer({
       id: 'highlighted',
-      type: 'fill',
-      source: 'parcs_source',
+      type: '______________',
+      source: '______________',
       paint: {
-        'fill-color': 'orange',
-        'fill-opacity': 0.6
+        'fill-color': '______________',
+        'fill-opacity': ____________
       },
-      filter: ['in', 'OBJECTID', ''] // Filtre vide au départ
+      filter: ['in', 'OBJECTID', ''] // Ne rien surligner au départ
     });
   });
   
-  // Interaction : survol des zones piétonnes pour détecter les zones scolaires intersectées
-  map.on('mousemove', 'pietonnes', function (e) {
+  // Survol d'une zone piétonne
+  map.on('mousemove', '______________', function (e) {
     const features = e.features;
   
     if (!features.length) return;
   
     const zonePietonne = features[0];
-    const zonePietonneBuffer = turf.buffer(zonePietonne, 500, {units: 'meters'});
-    const bbox = turf.bbox(zonePietonneBuffer);
-    const candidates = map.queryRenderedFeatures({ bbox: bbox, layers: ['parcs'] });
   
-    const intersecting = candidates.filter(z => {
-      return turf.booleanIntersects(zonePietonneBuffer, z);
+    const zonePietonneBuffer = turf.buffer(______________, ____________, {
+      units: 'meters'
+    }); // Crée un buffer autour de la zone
+  
+    const bbox = turf.bbox(______________); // Calcule l’enveloppe spatiale de la zone pietonne avec buffer de 500m
+    const candidates = map.queryRenderedFeatures({
+      bbox: bbox,
+      layers: ['______________']
     });
   
-    console.log(intersecting)
-    const ids = intersecting.map(f => f.properties.OBJECTID);
-    console.log(ids)
-    map.setFilter('highlighted', ['in', 'OBJECTID', ...ids]);
+    const intersecting = candidates.filter(z => {
+      return turf.booleanIntersects(______________, z);
+    });
   
-
-    // Mettre à jour l’interface DOM avec les noms des écoles
+    const ids = intersecting.map(f => f.properties.______________);
+  
+    map.setFilter('highlighted', ['in', 'OBJECTID', ...______________]);
+  
+    // Mise à jour de l'interface HTML
     const list = document.getElementById('list');
     list.innerHTML = '';
     intersecting.forEach(f => {
       const li = document.createElement('li');
-      li.textContent = f.properties.Nom ? f.properties.Nom : f.properties.TYPO1;
+      li.textContent = f.properties.Nom ? f.properties.Nom : f.properties.TYPO1; // nom de la propriété si la propriété Nom n'est pas dispo TYPO1
       list.appendChild(li);
     });
   });
   
-  // Curseur personnalisé
-  map.on('mouseenter', 'pietonnes', function () {
+  // Curseur personnalisé lors du survol d'un point rouge
+  map.on('mouseenter', '______________', function () {
     map.getCanvas().style.cursor = 'crosshair';
   });
-  map.on('mouseleave', 'pietonnes', function () {
+  map.on('mouseleave', '______________', function () {
     map.getCanvas().style.cursor = '';
   });
-  
