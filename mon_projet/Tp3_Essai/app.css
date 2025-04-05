@@ -1,17 +1,56 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-}
-
-h1 {
-    font-size: 2rem;
-    margin-top: 20px;
-}
-
+/* Style pour la carte */
 #map {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 80vh; /* La carte prendra 80% de la hauteur de la fenêtre */
-    margin-top: 20px;
+    height: 100%;
+}
+
+/* Style pour la zone de boutons */
+.buttons-container {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* Style pour le bouton principal */
+.menu-button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style pour le menu déroulant */
+.menu-options {
+    display: none; /* Par défaut, le menu est caché */
+    margin-top: 10px;
+}
+
+/* Quand le menu est actif, on l'affiche */
+.menu-options.active {
+    display: block;
+}
+
+/* Style pour les boutons dans le menu */
+.menu-options button {
+    margin: 5px;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Style pour les boutons au survol */
+.menu-options button:hover {
+    background-color: #218838;
 }
