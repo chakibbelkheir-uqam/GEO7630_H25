@@ -1,0 +1,28 @@
+version: "3.4"
+
+services:
+  server-web:
+    image: nginx
+    ports:
+      - "8081:80"
+    volumes:
+      - ./Tp3_Essai:/usr/share/nginx/html:ro
+    restart: always
+
+  pg_tileserv:
+    image: "pramsey/pg_tileserv:latest"
+    ports:
+      - "8802:7800"
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}
+    # volumes:
+    #   - ./pg_tileserv.toml:/etc/pg_tileserv.toml
+    restart: always
+
+  pg_featureserv:
+    image: "pramsey/pg_featureserv:latest"
+    ports:
+      - "9001:9000"
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}
+    restart: always
