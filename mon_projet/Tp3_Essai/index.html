@@ -1,30 +1,31 @@
+<!-- === index.html === -->
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carte avec MapLibre</title>
-    <link rel="stylesheet" href="app.css">
-    <link href="https://api.maptiler.com/maps/dataviz/style.css?key=JhO9AmIPH59xnAn5GiSj" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Qualité de vie à Montréal</title>
+  <link rel="stylesheet" href="app.css">
+  <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
 </head>
 <body>
-    <div id="map" style="height: 100vh;"></div>
-
-    <!-- Menu des boutons -->
-    <div class="buttons-container">
-        <button id="toggleMenu" class="menu-button">Options</button>
-        <div class="menu-options" id="menuOptions">
-            <button id="loadParcs">Charger les parcs</button>
-            <button id="loadCommerces">Charger les commerces</button>
-            <button id="loadEcoles">Charger les écoles</button>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://unpkg.com/maplibre-gl@2.2.0/dist/maplibre-gl.js"></script>
-    <script src="map.js"></script>
-    <script src="dataLoader.js"></script>
-    <script src="buttons.js"></script>
-    <script src="app.js"></script>
+  <div id="sidebar">
+    <button id="toggleSidebar">≡</button>
+    <h2>Critères</h2>
+    <label><input type="checkbox" class="criterion" value="police"> Police</label>
+    <label><input type="checkbox" class="criterion" value="crimes"> Crimes</label>
+    <label><input type="checkbox" class="criterion" value="pompiers"> Pompiers</label>
+    <label><input type="checkbox" class="criterion" value="hopitaux"> Hôpitaux</label>
+    <label><input type="checkbox" class="criterion" value="college"> Collèges</label>
+    <label><input type="checkbox" class="criterion" value="universite"> Universités</label>
+    <label><input type="checkbox" class="criterion" value="commerces"> Commerces</label>
+    <label><input type="checkbox" class="criterion" value="stm"> STM</label>
+    <label><input type="checkbox" class="criterion" value="espaces_verts"> Espaces verts</label>
+    <button id="loadGeoJson">Charger GeoJSON</button>
+    <button id="toggleArrondissements">Afficher les arrondissements</button>
+  </div>
+  <div id="map"></div>
+  <div id="info"></div>
+  <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

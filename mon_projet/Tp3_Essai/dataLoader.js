@@ -1,76 +1,99 @@
-// Initialisation de la carte avec Maplibre
-let map;
+// === dataLoader.js ===
+import { map } from './map.js';
 
-function initializeMap() {
-    map = new maplibregl.Map({
-        container: 'map',
-        style: 'https://api.maptiler.com/maps/dataviz/style.json?key=JhO9AmIPH59xnAn5GiSj',
-        center: [-73.5673, 45.5017], // Montréal
-        zoom: 12
-    });
-
-    // Assurer que la carte est prête avant d'ajouter des événements
-    map.on('load', function() {
-        console.log('Carte chargée');
-    });
+function getColorByScore(score) {
+  return [
+    '#d73027', '#fc8d59', '#fee08b', '#d9ef8b', '#91cf60', '#1a9850', '#006837'
+  ][Math.max(0, Math.min(6, Math.floor(score) - 1))];
 }
 
-// Charger un fichier GeoJSON
-function loadGeoJSON(url, layerId, map) {
-    // Vérifier si la carte est prête
-    if (map && map.isStyleLoaded()) {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                // Ajouter une source GeoJSON à la carte
-                map.addSource(layerId, {
-                    type: 'geojson',
-                    data: data
-                });
+export function setupGeoJsonButton() {
+  const btn = document.getElementById('loadGeoJson');
+  btn.addEventListener('click', async () => {
+    const res = await fetch('Quartier_MTL.json');
+    const data = await res.json();
 
-                // Ajouter une couche de type "circle" pour afficher les données
-                map.addLayer({
-                    id: layerId,
-                    type: 'circle',
-                    source: layerId,
-                    paint: {
-                        'circle-radius': 2,
-                        'circle-color': '#ff0000'
-                    }
-                });
-            })
-            .catch(error => console.error('Erreur de chargement GeoJSON:', error));
+    data.features.forEach(f => {
+      f.properties.score = f.properties.score_pondéré || f.properties.score_pondere || 0;
+    });
+
+    if (!map.getSource('quartiers')) {
+      map.addSource('quartiers', { type: 'geojson', data });
+
+      map.addLayer({
+        id: 'quartiers-layer',
+        type: 'fill',
+        source: 'quartiers',
+        paint: {
+          'fill-color': [
+            'interpolate', ['linear'], ['get', 'score'],
+            1, '#d73027',
+            2, '#fc8d59',
+            3, '#fee08b',
+            4, '#d9ef8b',
+            5, '#91cf60',
+            6, '#1a9850',
+            7, '#006837'
+          ],
+          'fill-opacity': 0.6
+        }
+      });
+
+      map.on('click', 'quartiers-layer', (e) => {
+        const props = e.features[0].properties;
+        document.getElementById('info').innerHTML = `
+          <strong>${props.NOM_OFFICIEL}</strong><br/>
+          Score: ${props.SCORE_QUARTIER}<br/>
+          Police: ${props.nbr_poste_police || props.Nbr_poste_police || 0}<br/>
+          Crimes: ${props.nbr_crimes || props.Nbr_crimes || 0}<br/>
+          Pompiers: ${props.nbr_Caserne_pompier || props.Nbr_Caserne_pompier || 0}<br/>
+          Hôpitaux: ${props.nbr_hopitaux || props.Nbr_hopitaux || 0}<br/>
+          Collèges: ${props.nbr_college || props.Nbr_college || 0}<br/>
+          Universités: ${props.nbr_universite || props.Nbr_université || 0}<br/>
+          Commerces: ${props.nbr_resto_commerces || props.Nbr_resto_commerces || 0}<br/>
+          STM: ${props.nbr_arret_stm || props.Nbr_Arret_STM || 0}<br/>
+          Parcs: ${props.nbr_parc || props.Nbr_parc || 0}
+        `;
+      });
     } else {
-        console.log('La carte n\'est pas encore prête.');
+      map.getSource('quartiers').setData(data);
     }
+
+    window.updateScoreByCriteria = (criteres) => {
+      data.features.forEach(feature => {
+        let score = 0;
+        criteres.forEach(c => {
+          const lower = parseFloat(feature.properties["nbr_" + c]);
+          const upper = parseFloat(feature.properties["Nbr_" + c]);
+          score += !isNaN(lower) ? lower : (!isNaN(upper) ? upper : 0);
+        });
+        feature.properties.score = score;
+      });
+      map.setPaintProperty('quartiers-layer', 'fill-color', [
+        'interpolate', ['linear'], ['get', 'score'],
+        1, '#d73027',
+        2, '#fc8d59',
+        3, '#fee08b',
+        4, '#d9ef8b',
+        5, '#91cf60',
+        6, '#1a9850',
+        7, '#006837'
+      ]);
+      map.getSource('quartiers').setData(data);
+    };
+  });
 }
-
-// Initialiser la carte quand le DOM est prêt
-document.addEventListener('DOMContentLoaded', function() {
-    initializeMap();  // Initialiser la carte
-
-    // Vérifier si le bouton 'loadParcs' existe avant d'ajouter un événement
-    const loadParcsButton = document.getElementById('loadParcs');
-    if (loadParcsButton) {
-        loadParcsButton.addEventListener('click', function() {
-            loadGeoJSON('https://donnees.montreal.ca/fr/dataset/2e9e4d2f-173a-4c3d-a5e3-565d79baa27d/resource/35796624-15df-4503-a569-797665f8768e/download/espace_vert.json', 'parcs', map);
-        });
-    }
-
-    // Ajouter un événement pour charger les commerces
-    const loadCommercesButton = document.getElementById('loadCommerces');
-    if (loadCommercesButton) {
-        loadCommercesButton.addEventListener('click', function() {
-            loadGeoJSON('https://donnees.montreal.ca/dataset/c1d65779-d3cb-44e8-af0a-b9f2c5f7766d/resource/ece728c7-6f2d-4a51-a36d-21cd70e0ddc7/download/businesses.geojson', 'commerces', map);
-        });
-    }
-
-    // Ajouter un événement pour charger les écoles
-    const loadEcolesButton = document.getElementById('loadEcoles');
-    if (loadEcolesButton) {
-        loadEcolesButton.addEventListener('click', function() {
-            loadGeoJSON('https://donnees.montreal.ca/fr/dataset/1eee09ec-d3b8-4c7d-ab6d-e85eb9fdd0b0/resource/ff47b841-19c3-4a9a-be32-68a71c187b64/download/eqcollegial.json', 'ecoles', map);
-        });
-    }
-});
-
+// Ajouter la légende après l'initialisation
+const legend = document.createElement('div');
+legend.id = 'legend';
+legend.innerHTML = `
+  <h4>Légende des scores</h4>
+  <div><span style="background:#d73027"></span> Score 1</div>
+  <div><span style="background:#fc8d59"></span> Score 2</div>
+  <div><span style="background:#fee08b"></span> Score 3</div>
+  <div><span style="background:#d9ef8b"></span> Score 4</div>
+  <div><span style="background:#91cf60"></span> Score 5</div>
+  <div><span style="background:#1a9850"></span> Score 6</div>
+  <div><span style="background:#006837"></span> Score 7</div>
+`;
+document.body.appendChild(legend);
