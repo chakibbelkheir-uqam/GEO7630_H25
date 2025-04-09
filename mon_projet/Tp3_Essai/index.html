@@ -1,31 +1,40 @@
-<!-- === index.html === -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Qualité de vie à Montréal</title>
-  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="app.css" />
   <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
 </head>
 <body>
+
+  <!-- === SIDEBAR === -->
   <div id="sidebar">
     <button id="toggleSidebar">≡</button>
     <h2>Critères</h2>
-    <label><input type="checkbox" class="criterion" value="police"> Police</label>
-    <label><input type="checkbox" class="criterion" value="crimes"> Crimes</label>
-    <label><input type="checkbox" class="criterion" value="pompiers"> Pompiers</label>
-    <label><input type="checkbox" class="criterion" value="hopitaux"> Hôpitaux</label>
-    <label><input type="checkbox" class="criterion" value="college"> Collèges</label>
-    <label><input type="checkbox" class="criterion" value="universite"> Universités</label>
-    <label><input type="checkbox" class="criterion" value="commerces"> Commerces</label>
-    <label><input type="checkbox" class="criterion" value="stm"> STM</label>
-    <label><input type="checkbox" class="criterion" value="espaces_verts"> Espaces verts</label>
+    <form id="criteriaForm">
+      <label><input type="checkbox" class="criterion" value="nbr_poste_police"> Police</label><br/>
+      <label><input type="checkbox" class="criterion" value="Nbr_crimes"> Crimes</label><br/>
+      <label><input type="checkbox" class="criterion" value="Nbr_Caserne_pompier"> Pompiers</label><br/>
+      <label><input type="checkbox" class="criterion" value="Nbr_hopitaux"> Hôpitaux</label><br/>
+      <label><input type="checkbox" class="criterion" value="Nbr_college"> Collèges</label><br/>
+      <label><input type="checkbox" class="criterion" value="Nbr_université"> Universités</label><br/>
+      <label><input type="checkbox" class="criterion" value="nbr_resto_commerces"> Commerces</label><br/>
+      <label><input type="checkbox" class="criterion" value="Nbr_Arret_STM"> STM</label><br/>
+      <label><input type="checkbox" class="criterion" value="Nbr_parc"> Parcs</label><br/>
+    </form>
     <button id="loadGeoJson">Charger GeoJSON</button>
     <button id="toggleArrondissements">Afficher les arrondissements</button>
   </div>
+
+  <!-- === MAP === -->
   <div id="map"></div>
+
+  <!-- === INFO BOX === -->
   <div id="info"></div>
+
+  <!-- === SCRIPTS === -->
   <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js" defer></script>
 </body>
 </html>

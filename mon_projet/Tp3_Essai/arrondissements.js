@@ -10,9 +10,7 @@ export function handleArrondissements() {
       const res = await fetch('https://donnees.montreal.ca/dataset/9797a946-9da8-41ec-8815-f6b276dec7e9/resource/e18bfd07-edc8-4ce8-8a5a-3b617662a794/download/limites-administratives-agglomeration.geojson');
       const arrondissements = await res.json();
 
-      if (!map.getSource('arrondissements')) {
-        map.addSource('arrondissements', { type: 'geojson', data: arrondissements });
-      }
+      map.addSource('arrondissements', { type: 'geojson', data: arrondissements });
 
       if (!map.getLayer(layerId)) {
         map.addLayer({
@@ -21,7 +19,7 @@ export function handleArrondissements() {
           source: 'arrondissements',
           paint: {
             'line-color': '#ff0000',
-            'line-width': 2
+            'line-width': 0.5
           },
           layout: {
             'visibility': 'visible'

@@ -10,5 +10,4 @@ export function initMap() {
   });
 
   map.addControl(new maplibregl.NavigationControl());
-
-  
+}
