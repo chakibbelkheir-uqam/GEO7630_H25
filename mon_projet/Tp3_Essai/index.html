@@ -3,38 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <title>Qualité de vie à Montréal</title>
+
+  <!-- Google Font Inter -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Ta CSS -->
   <link rel="stylesheet" href="app.css" />
-  <link href="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css" rel="stylesheet" />
+
+  <!-- MapLibre CSS -->
+  <link
+    href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css"
+    rel="stylesheet"
+  />
 </head>
 <body>
+  <!-- Backdrop pour lorsque la sidebar est ouverte -->
+  <div id="sidebarBackdrop"></div>
 
-  <!-- === SIDEBAR === -->
-  <div id="sidebar">
-    <button id="toggleSidebar">≡</button>
-    <h2>Critères</h2>
+  <!-- Sidebar (initialement masquée) -->
+  <div id="sidebar" class="collapsed">
+    <!-- Toggle INSIDE the sidebar -->
+    <button id="toggleSidebar" class="sidebar-toggle">☰</button>
+
+    <h3>Critères</h3>
     <form id="criteriaForm">
-      <label><input type="checkbox" class="criterion" value="nbr_poste_police"> Police</label><br/>
-      <label><input type="checkbox" class="criterion" value="Nbr_crimes"> Crimes</label><br/>
-      <label><input type="checkbox" class="criterion" value="Nbr_Caserne_pompier"> Pompiers</label><br/>
-      <label><input type="checkbox" class="criterion" value="Nbr_hopitaux"> Hôpitaux</label><br/>
-      <label><input type="checkbox" class="criterion" value="Nbr_college"> Collèges</label><br/>
-      <label><input type="checkbox" class="criterion" value="Nbr_université"> Universités</label><br/>
-      <label><input type="checkbox" class="criterion" value="nbr_resto_commerces"> Commerces</label><br/>
-      <label><input type="checkbox" class="criterion" value="Nbr_Arret_STM"> STM</label><br/>
-      <label><input type="checkbox" class="criterion" value="Nbr_parc"> Parcs</label><br/>
+      <label><input type="checkbox" class="criterion" value="nbr_poste_police"> Police</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_crimes"> Crimes</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_Caserne_pompier"> Pompiers</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_hopitaux"> Hôpitaux</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_college"> Collèges</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_université"> Universités</label>
+      <label><input type="checkbox" class="criterion" value="nbr_resto_commerces"> Commerces</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_Arret_STM"> STM</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_parc"> Parcs</label>
     </form>
-    <button id="loadGeoJson">Charger GeoJSON</button>
-    <button id="toggleArrondissements">Afficher les arrondissements</button>
+
+    <button id="loadHexGrid">📥 Charger Hexagones</button>
+    <button id="calculateScore">🎯 Calculer le score</button>
+    <hr/>
+    <button id="toggleArrondissements">🗺 Arrondissements</button>
   </div>
 
-  <!-- === MAP === -->
+  <!-- La carte -->
   <div id="map"></div>
 
-  <!-- === INFO BOX === -->
-  <div id="info"></div>
+  <!-- Panneau d’info -->
+  <div id="info">Score : <span id="scoreValue">-</span>/7</div>
 
-  <!-- === SCRIPTS === -->
-  <script src="https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js"></script>
-  <script type="module" src="app.js" defer></script>
+  <!-- Scripts -->
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>

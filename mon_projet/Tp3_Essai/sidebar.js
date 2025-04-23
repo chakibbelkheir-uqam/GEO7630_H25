@@ -1,27 +1,27 @@
-export function initSidebar() {
+// === sidebar.js ===
+export function initSidebar(onCalculate) {
   const sidebar = document.getElementById('sidebar');
-  const toggle = document.getElementById('toggleSidebar');
+  const toggle  = document.getElementById('toggleSidebar');
+  const form    = document.getElementById('criteriaForm');
+  const calcBtn = document.getElementById('calculateScore');
+  let selectedCriteria = [];
 
-  if (!sidebar || !toggle) {
-    console.error("❌ Sidebar ou bouton non trouvé dans le DOM !");
-    return;
-  }
+  // Ouvrir/fermer sidebar
+  toggle.addEventListener('click', () => sidebar.classList.toggle('collapsed'));
 
-  toggle.addEventListener('click', () => {
-    sidebar.classList.toggle('collapsed');
+  // Mettre à jour critères
+  form.addEventListener('change', () => {
+    selectedCriteria = Array
+      .from(form.querySelectorAll('.criterion:checked'))
+      .map(cb => cb.value);
+
+    if (selectedCriteria.length && selectedCriteria.length < 3) {
+      alert("🔔 Pour une meilleure expérience, cochez au moins 3 critères !");
+    }
   });
 
-  const form = document.getElementById('criteriaForm');
-  if (!form) {
-    console.error("❌ Formulaire de critères non trouvé !");
-    return;
-  }
-
-  form.addEventListener('change', () => {
-    const selected = Array.from(form.querySelectorAll('.criterion:checked'))
-      .map(cb => cb.value);
-    if (window.updateScoreByCriteria) {
-      window.updateScoreByCriteria(selected);
-    }
+  // Bouton Calculer
+  calcBtn.addEventListener('click', () => {
+    onCalculate(selectedCriteria);
   });
 }

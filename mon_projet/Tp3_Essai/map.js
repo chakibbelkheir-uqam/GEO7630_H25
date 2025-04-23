@@ -8,6 +8,6 @@ export function initMap() {
     center: [-73.56, 45.52],
     zoom: 10
   });
-
   map.addControl(new maplibregl.NavigationControl());
+  return map;
 }
