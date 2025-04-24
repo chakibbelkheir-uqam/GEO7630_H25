@@ -10,19 +10,22 @@ async function main() {
   const map = initMap();
   await new Promise(res => map.on('load', res));
 
-  // 2) Arrondissements (masqués)
+  // 2) Arrondissements (masqués par défaut)
   await initArrondissements('arrondissements.json');
   let arrVisible = false;
-  document.getElementById('toggleArrondissements')
-    .addEventListener('click', () => {
+  const btnArr = document.getElementById('toggleArrondissements');
+  if (btnArr) {
+    btnArr.addEventListener('click', () => {
       arrVisible = !arrVisible;
       toggleArrondissements(arrVisible);
     });
+  }
 
   // 3) Chargement des hexagones
   let hexData = null;
-  document.getElementById('loadHexGrid')
-    .addEventListener('click', async () => {
+  const btnLoad = document.getElementById('loadHexGrid');
+  if (btnLoad) {
+    btnLoad.addEventListener('click', async () => {
       if (!hexData) {
         hexData = await loadGeoJSON('Quartier_MTL.json');
       }
@@ -39,7 +42,7 @@ async function main() {
           }
         });
 
-        // 👉 Clic sur un hexagone
+        // Clic sur un hexagone
         map.on('click', 'hexgrid-layer', e => {
           const feature = e.features[0];
           const props   = feature.properties;
@@ -52,7 +55,7 @@ async function main() {
             .from(document.querySelectorAll('.criterion:checked'))
             .map(cb => cb.value);
 
-          // Libellés
+          // Labels personnalisés
           const labels = {
             'nbr_poste_police':    'Nombre de postes de police',
             'Nbr_crimes':          'Nombre de crimes',
@@ -68,7 +71,7 @@ async function main() {
             'Score_Attraction':    'Score Attraction'
           };
 
-          // Construction du HTML
+          // Construction du contenu HTML
           let html = `<strong>${quartier}</strong><br/><br/>`;
           html += '<strong>Détails :</strong><br/>';
           checked.forEach(key => {
@@ -77,7 +80,7 @@ async function main() {
             html += `${label}: ${value}<br/>`;
           });
 
-          // Score et commentaire
+          // Calcul du score et commentaire
           const s = calculateScore(feature, checked);
           if (s >= 6) {
             html += '<br/><b>Waouhhh ! Ce quartier est top ! 👌</b>';
@@ -87,19 +90,23 @@ async function main() {
             html += '<br/><b>Pas mal ! Ça peut le faire 😉</b>';
           }
 
-          // Affiche le popup
+          // Affiche le popup MapLibre
           new maplibregl.Popup({ offset: 10 })
             .setLngLat(e.lngLat)
             .setHTML(html)
             .addTo(map);
 
-          // Affiche le panneau info
+          // Affiche le panneau info si présent
           const info = document.getElementById('info');
-          document.getElementById('scoreValue').textContent = s;
-          info.classList.remove('hidden');
+          const scoreEl = document.getElementById('scoreValue');
+          if (info && scoreEl) {
+            scoreEl.textContent = s;
+            info.classList.remove('hidden');
+          }
         });
       }
     });
+  }
 
   // 4) Calcul global via la sidebar
   initSidebar(criteria => {
@@ -116,11 +123,14 @@ async function main() {
     map.setPaintProperty('hexgrid-layer', 'fill-color', ['get', '_color']);
   });
 
-  // 5) Fermer le panneau info
-  document.getElementById('infoClose')
-    .addEventListener('click', () => {
-      document.getElementById('info').classList.add('hidden');
+  // 5) Fermer le panneau info (si le bouton existe)
+  const infoClose = document.getElementById('infoClose');
+  if (infoClose) {
+    infoClose.addEventListener('click', () => {
+      const info = document.getElementById('info');
+      if (info) info.classList.add('hidden');
     });
+  }
 }
 
 main();

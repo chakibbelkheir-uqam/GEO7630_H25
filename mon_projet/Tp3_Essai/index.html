@@ -28,17 +28,17 @@
     <!-- Toggle INSIDE the sidebar -->
     <button id="toggleSidebar" class="sidebar-toggle">☰</button>
 
-    <h3>Critères</h3>
+    <h3>Je souhaite :</h3>
     <form id="criteriaForm">
-      <label><input type="checkbox" class="criterion" value="nbr_poste_police"> Police</label>
-      <label><input type="checkbox" class="criterion" value="Nbr_crimes"> Crimes</label>
-      <label><input type="checkbox" class="criterion" value="Nbr_Caserne_pompier"> Pompiers</label>
-      <label><input type="checkbox" class="criterion" value="Nbr_hopitaux"> Hôpitaux</label>
-      <label><input type="checkbox" class="criterion" value="Nbr_college"> Collèges</label>
-      <label><input type="checkbox" class="criterion" value="Nbr_université"> Universités</label>
-      <label><input type="checkbox" class="criterion" value="nbr_resto_commerces"> Commerces</label>
-      <label><input type="checkbox" class="criterion" value="Nbr_Arret_STM"> STM</label>
-      <label><input type="checkbox" class="criterion" value="Nbr_parc"> Parcs</label>
+      <label><input type="checkbox" class="criterion" value="nbr_poste_police"> un poste de police </label>
+      <label><input type="checkbox" class="criterion" value="Nbr_crimes"> un taux criminalité bas </label>
+      <label><input type="checkbox" class="criterion" value="Nbr_Caserne_pompier"> une caserne de pompiers</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_hopitaux">  un hopital </label>
+      <label><input type="checkbox" class="criterion" value="Nbr_college"> Des collèges</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_université"> Des universités</label>
+      <label><input type="checkbox" class="criterion" value="nbr_resto_commerces"> Des commerces</label>
+      <label><input type="checkbox" class="criterion" value="Nbr_Arret_STM"> Transport en commun (STM) </label>
+      <label><input type="checkbox" class="criterion" value="Nbr_parc"> Des parcs et la verdure </label>
     </form>
 
     <button id="loadHexGrid">📥 Charger Hexagones</button>
@@ -50,6 +50,10 @@
   <!-- La carte -->
   <div id="map"></div>
 
+  <div id="appHeader">
+    <h1>Montréal à la carte</h1>
+    <h2>Trouve le meilleur quartier selon tes critères</h2>
+  </div>
   <!-- Panneau d’info -->
   <div id="info">Score : <span id="scoreValue">-</span>/7</div>
 

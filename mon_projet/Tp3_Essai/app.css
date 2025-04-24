@@ -1,126 +1,155 @@
 :root {
-  --font-base: 'Inter', sans-serif;
-  --color-bg: #f5f6fa;
-  --color-primary: #336699;
-  --color-primary-dark: #2a5278;
-  --transition: 0.3s ease;
-  --sidebar-width: 260px;
-  --toggle-size: 32px;
+  --font-base:       'Inter', sans-serif;
+  --color-bg:        #f5f6fa;
+  --color-primary:   #336699;
+  --color-primary-2: #2a5278;
+  --transition:      0.3s ease;
+  --sidebar-width:   260px;
+  --toggle-size:     32px;
 }
 
+/* Reset & global */
 * {
   box-sizing: border-box;
   font-family: var(--font-base);
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
 }
-
-/* Corps & fond */
 body, html {
   height: 100%;
   background: var(--color-bg);
 }
 
-/* La carte en plein écran */
+/* Carte */
 #map {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
 }
 
-/* Backdrop (cliquable pour fermer la sidebar) */
-#sidebarBackdrop {
+/* Barre de recherche maison */
+#geocoder {
   position: absolute;
-  inset: 0;
+  top: 16px;
+  left: calc(var(--sidebar-width) + 32px);
+  z-index: 1000;
+  display: flex;
+  gap: 4px;
+}
+#searchBox {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 240px;
+}
+#searchButton {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+#searchButton:hover {
+  background: var(--color-primary-2);
+}
+
+/* Header appli */
+#appHeader {
+  position: fixed;
+  top: 16px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  background: rgba(255,255,255,0.9);
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  text-align: center;
+  pointer-events: none;
+}
+#appHeader h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+#appHeader h2 {
+  font-size: 16px;
+  font-weight: 400;
+  color: #555;
+}
+
+/* Sidebar & backdrop */
+#sidebarBackdrop {
+  position: absolute; inset: 0;
   background: rgba(0,0,0,0.3);
-  opacity: 0;
-  visibility: hidden;
+  opacity: 0; visibility: hidden;
   transition: opacity var(--transition), visibility var(--transition);
-  z-index: 8;
+  z-index: 2;
+  pointer-events: none;
 }
 #sidebarBackdrop.active {
-  opacity: 1;
-  visibility: visible;
+  opacity: 1; visibility: visible;
+  pointer-events: all;
 }
-
-/* Sidebar */
 #sidebar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--sidebar-width);
-  height: 100%;
-  background: #fff;
-  padding: 16px;
+  position: absolute; top: 0; left: 0;
+  width: var(--sidebar-width); height: 100%;
+  background: #fff; padding: 16px;
   box-shadow: 2px 0 6px rgba(0,0,0,0.2);
   transform: translateX(0);
   transition: transform var(--transition);
-  z-index: 9;
+  z-index: 3;
 }
 #sidebar.collapsed {
   transform: translateX(calc(-1 * var(--sidebar-width)));
 }
-
-/* Toggle (maintenant DANS la sidebar) */
 #sidebar .sidebar-toggle {
-  position: absolute;
-  top: 16px;
+  position: absolute; top: 16px;
   right: calc(-1 * var(--toggle-size));
-  width: var(--toggle-size);
-  height: var(--toggle-size);
+  width: var(--toggle-size); height: var(--toggle-size);
   background: var(--color-primary);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+  color: #fff; border: none; border-radius: 4px;
   cursor: pointer;
-  transition: transform var(--transition), background var(--transition), right var(--transition);
-  z-index: 10;
+  transition: transform var(--transition), background var(--transition);
+  z-index: 4;
 }
 #sidebar .sidebar-toggle:hover {
-  background: var(--color-primary-dark);
+  background: var(--color-primary-2);
 }
-/* Tourner la flèche quand la sidebar est fermée */
 #sidebar.collapsed .sidebar-toggle {
   transform: rotate(180deg);
 }
-
-/* Critères */
 #criteriaForm label {
-  display: block;
-  margin: 8px 0;
-  font-weight: 500;
+  display: block; margin: 8px 0; font-weight: 500;
 }
-
-/* Boutons dans la sidebar */
 #sidebar button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  margin: 12px 0;
-  padding: 10px;
+  width: 100%; margin: 12px 0; padding: 10px;
   background: var(--color-primary);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
+  color: #fff; border: none; border-radius: 4px;
+  font-weight: 600; cursor: pointer;
   transition: background var(--transition), transform var(--transition);
+  display: flex; align-items: center; gap: 8px;
 }
 #sidebar button:hover {
-  background: var(--color-primary-dark);
+  background: var(--color-primary-2);
   transform: scale(1.02);
 }
 
-/* Panel info */
+/* Panneau info */
 #info {
   position: absolute;
   bottom: 16px;
   left: calc(var(--sidebar-width) + 28px);
-  background: rgba(255,255,255,0.9);
-  padding: 10px 14px;
-  border-radius: 6px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  font-weight: 600;
-  z-index: 9;
+  display: flex; align-items: center;
+  background: #fff; padding: 8px 12px;
+  border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-weight: 600; color: #333;
+  z-index: 5;
+}
+#info.hidden { display: none; }
+#infoClose {
+  background: transparent; border: none;
+  font-size: 16px; margin-right: 8px;
+  cursor: pointer; line-height: 1;
 }
