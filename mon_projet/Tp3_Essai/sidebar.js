@@ -15,7 +15,7 @@ export function initSidebar(onCalculate) {
       .from(form.querySelectorAll('.criterion:checked'))
       .map(cb => cb.value);
 
-    if (selectedCriteria.length && selectedCriteria.length < 2) {
+    if (selectedCriteria.length && selectedCriteria.length < 3) {
       alert("🔔 Pour une meilleure expérience, cochez au moins 3 critères !");
     }
   });
