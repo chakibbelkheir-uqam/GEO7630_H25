@@ -13,7 +13,7 @@ function generate3D() {
     // Ajoute une nouvelle source de données geojson à la carte avec la grille générée
     map.addSource('3d-source', {
         type: 'geojson',
-        data: __________
+        data: grid
     });
 
     // Ajoute une nouvelle couche de type fill-extrusion à la carte pour afficher la grille en 3D
@@ -50,4 +50,4 @@ function generate3D() {
 // Ajoute un événement d'écoute du clic sur l'élément HTML avec l'ID 'generate3D'
 document
     .getElementById('generate3D') // id unique du bouton
-    .addEventListener('click', ________);  // ajoute un event de type click qui lance la fonction generate3D()
+    .addEventListener('click', generate3D);  // ajoute un event de type click qui lance la fonction generate3D()
