@@ -7,7 +7,7 @@ function generateClusters () {
     // Ajout d'une source de données à la carte avec clustering
     map.addSource('clusters-source', {
         type: 'geojson',          // Type de la source de données : géojson
-        data: ______,       // Données à utiliser pour la source
+        data: randomPoints,       // Données à utiliser pour la source
         cluster: true,            // Activation du clustering pour regrouper les points proches
         clusterMaxZoom: 14,       // Zoom maximal pour regrouper les points
         clusterRadius: 50         // Rayon de chaque cluster lors du regroupement des points (par défaut à 50)
@@ -17,7 +17,7 @@ function generateClusters () {
     map.addLayer({
         id: 'clusters',
         type: 'circle',           // Type de la couche : cercle
-        source: ___________________, // Source de données utilisée pour la couche
+        source: 'clusters-source', // Source de données utilisée pour la couche
         filter: ['has', 'point_count'], // Filtrage pour afficher uniquement les clusters
         paint: {
             'circle-color': [          // Couleur du cercle basée sur le nombre de points
@@ -62,7 +62,7 @@ function generateClusters () {
     // Ajout d'une couche pour afficher les points non regroupés
     map.addLayer({
         id: 'unclustered-point',
-        type: _________,          // Type de la couche : cercle
+        type: 'circle',          // Type de la couche : cercle
         source: 'clusters-source', // Source de données utilisée pour la couche
         filter: ['!', ['has', 'point_count']], // Filtrage pour afficher uniquement les points non regroupés
         paint: {
@@ -76,5 +76,5 @@ function generateClusters () {
 
 // Écouteur d'événement pour le bouton de génération des clusters
 document
-  .getElementById(__________________) // id unique du bouton
+  .getElementById('generateClusters') // id unique du bouton
   .addEventListener('click', generateClusters); // ajoute un event de type click qui lance la fonction generateClusters()

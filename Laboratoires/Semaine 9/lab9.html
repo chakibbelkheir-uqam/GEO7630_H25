@@ -1,54 +1,52 @@
-<!doctype html>
-
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <!--Ici on injecte le fichier css de stylisation maplibre gl -->
-  <link rel="stylesheet" type="text/css" href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css"  />
-
-  <!--Ici on injecte le fichier css de stylisation de notre cru-->
-  <link rel="stylesheet" type="text/css" href="./lab9.css"  />
-
-
-  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/geojson-extent@0.3.2/geojson-extent.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Affichage GeoJSON - LAB 9</title>
+    <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        #map {
+            width: 100%;
+            height: 90%;
+        }
+        #controls {
+            height: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            background: #f0f0f0;
+            padding: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        input[type="file"] {
+            padding: 5px;
+        }
+    </style>
 </head>
-
-
 <body>
-  <!--Ici on injecte une div qui ne servira a injecter notre carte -->
-  <div id="map"></div>
 
-  <!--Ici on injecte une div qui servira de conteneur pour notre menu -->
-  <div id="menu">
-    <!--Ici on injecte une div qui servira de conteneur enfant pour notre menu -->
-    <div id="boite">
-      
-      <h1>Titre</h1>
-      <h2>Sous-titre</h2>
-      
-      <!--Ici on injecte une div qui servira de conteneur pour notre bouton de chargement -->
-      <div id=bouton1>
-         <!--Ici on injecte un INPUT de type file qui servira de bouton pour charger le fichier -->
-         <!--Le bouton a une propriete accept qui nous permet de speficier  et forcer le type de fichier qui peut etre injecter,
-           dans notre cas GeoJSON-->
-        <input type="file" id="file" name="file"
-          accept="application/geo+json,application/vnd.geo+json,.geojson,application/json" />
-      </div>
+<div id="map"></div>
+<div id="controls">
+    <input type="file" id="file" accept=".geojson,application/geo+json" />
+    <button id="zoomto">Zoom vers les polygones</button>
+    <button id="colorier">Colorier par operator_id</button>
+</div>
 
-      <!--Ici on injecte une div qui servira de conteneur enfant pour notre bouton de zoom -->
-      <div id=bouton2>
-        <button id=zoomto>Zoomer données</button>
-      </div>
+<script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/geojson-extent/geojson-extent.js"></script>
+<script src="lab9.js"></script>
+<script src="randomColor.js"></script>
 
-      <!--Ici on injecte une div qui servira de conteneur enfant pour bouton de colorisation -->      
-      <div id=bouton3>
-        <button id=colorier>Colorier</button>
-      </div>
-
-    </div>
-  </div>
 </body>
-
-<!--Maintenant notre code HTML est initialise par l'ordinateur et la librairie maplibre gl est chargee en memoire-->      
-<!--Une fois que tout est beau c'est le moment d'injecter notre script qui contient nos fonctionnalites-->      
-
-<script type='text/javascript' src="./lab9.js"></script>
+</html>
